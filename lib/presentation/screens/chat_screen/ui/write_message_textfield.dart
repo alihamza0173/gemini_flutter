@@ -1,4 +1,5 @@
 import 'package:elders_ai_app/application/provider/message_provider.dart';
+import 'package:elders_ai_app/application/provider/speech_to_text_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -41,9 +42,22 @@ class WriteMessageTextField extends ConsumerWidget {
           ),
           IconButton(
             onPressed: () {
-              ref.read(messagesProvider).isVoiceChat
-                  ? showRecordingBottomSheet(context)
-                  : ref.read(messagesProvider).addMessage();
+              if (ref.read(messagesProvider).isVoiceChat) {
+                ref.read(speechToTextProvider).startListening(context,
+                    onListening: (bool value) {
+                  if (value) {
+                    debugPrint('Listening...');
+                    showRecordingBottomSheet(context, ref);
+                  } else {
+                    debugPrint('Not Listening...');
+                    Navigator.canPop(context)
+                        ? Navigator.of(context).pop()
+                        : null;
+                  }
+                });
+              } else {
+                ref.read(messagesProvider).addMessage();
+              }
             },
             icon: Icon(ref.watch(messagesProvider).isVoiceChat
                 ? Icons.mic
@@ -59,7 +73,8 @@ class WriteMessageTextField extends ConsumerWidget {
     );
   }
 
-  Future<dynamic> showRecordingBottomSheet(BuildContext context) {
+  Future<dynamic> showRecordingBottomSheet(
+      BuildContext context, WidgetRef ref) {
     return showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(),
@@ -68,9 +83,12 @@ class WriteMessageTextField extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                ref.read(speechToTextProvider).cancelListening();
+                Navigator.of(context).pop();
+              },
               child: const Text('cancel')),
-          const Text('Recording...'),
+          const Text('Listening...'),
           TextButton(onPressed: () {}, child: const Text('send')),
         ],
       ),

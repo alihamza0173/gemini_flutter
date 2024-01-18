@@ -22,14 +22,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   @override
-  void dispose() {
-    debugPrint('chat screen dispose');
-    // dispose the controller from message provider
-    ref.read(messagesProvider).disposeControllers();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final messages = ref.watch(messagesProvider).messages;
     return Scaffold(
