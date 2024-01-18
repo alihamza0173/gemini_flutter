@@ -16,7 +16,6 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   void toggleTheme() {
-    debugPrint('toggleTheme $isDarkMode');
     _themeMode = isDarkMode ? ThemeMode.light : ThemeMode.dark;
     notifyListeners();
   }

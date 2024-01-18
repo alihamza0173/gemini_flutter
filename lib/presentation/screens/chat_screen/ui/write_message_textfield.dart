@@ -2,46 +2,19 @@ import 'package:elders_ai_app/application/provider/message_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class WriteMessageTextField extends StatefulWidget {
-  const WriteMessageTextField({
-    super.key,
-    required this.scrollController,
-  });
-  final ScrollController scrollController;
+class WriteMessageTextField extends ConsumerWidget {
+  const WriteMessageTextField({super.key});
 
   @override
-  State<WriteMessageTextField> createState() => _WriteMessageTextFieldState();
-}
-
-class _WriteMessageTextFieldState extends State<WriteMessageTextField> {
-  late final TextEditingController _textEditingController;
-
-  @override
-  void initState() {
-    debugPrint('text field initState');
-    _textEditingController = TextEditingController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    debugPrint('text field dispose');
-    _textEditingController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
       child: Row(
         children: [
           Expanded(
             child: TextField(
-              controller: _textEditingController,
-              autocorrect: true,
+              controller: ref.read(messagesProvider).textEditingController,
               textCapitalization: TextCapitalization.sentences,
-              enableSuggestions: true,
               minLines: 1,
               maxLines: 5,
               style: const TextStyle(
@@ -66,27 +39,39 @@ class _WriteMessageTextFieldState extends State<WriteMessageTextField> {
               ),
             ),
           ),
-          Consumer(builder: (context, ref, _) {
-            return IconButton(
-              onPressed: () {
-                ref
-                    .read(messagesProvider)
-                    .addMessage(_textEditingController.text);
-                _textEditingController.clear();
-                widget.scrollController.animateTo(
-                  widget.scrollController.position.maxScrollExtent + 100.0,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeOut,
-                );
-              },
-              icon: const Icon(Icons.send),
-              iconSize: 22.0,
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blue),
-                iconColor: MaterialStateProperty.all(Colors.white),
-              ),
-            );
-          }),
+          IconButton(
+            onPressed: () {
+              ref.read(messagesProvider).isVoiceChat
+                  ? showRecordingBottomSheet(context)
+                  : ref.read(messagesProvider).addMessage();
+            },
+            icon: Icon(ref.watch(messagesProvider).isVoiceChat
+                ? Icons.mic
+                : Icons.send),
+            iconSize: 22.0,
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.blue),
+              iconColor: MaterialStateProperty.all(Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<dynamic> showRecordingBottomSheet(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(),
+      isDismissible: false,
+      builder: (context) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('cancel')),
+          const Text('Recording...'),
+          TextButton(onPressed: () {}, child: const Text('send')),
         ],
       ),
     );
