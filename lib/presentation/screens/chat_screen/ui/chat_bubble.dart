@@ -1,3 +1,4 @@
+import 'package:elders_ai_app/application/provider/tts_provider.dart';
 import 'package:elders_ai_app/core/models/chat.dart';
 import 'package:flutter/material.dart';
 
@@ -39,10 +40,13 @@ class ChatBubble extends StatelessWidget {
                 ),
               ),
               if (!isSentByUser)
-                const Icon(
-                  Icons.volume_up,
-                  size: 18,
-                  color: Colors.white,
+                InkWell(
+                  onTap: () => TTSProvider().speak(message.message),
+                  child: const Icon(
+                    Icons.volume_up,
+                    size: 18,
+                    color: Colors.white,
+                  ),
                 )
             ],
           ),
