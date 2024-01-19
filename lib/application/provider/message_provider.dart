@@ -17,11 +17,11 @@ class MessageProvider extends ChangeNotifier {
   ScrollController get scrollController => _scrollController;
 
   // when user press on send message
-  void addMessage() {
+  void addMessage([String? message]) {
     _messages.add(Message(
       sender: 'User',
       receiver: 'Elders AI',
-      message: _textEditingController.text,
+      message: message ?? _textEditingController.text,
     ));
     notifyListeners();
     // to clear the text from textfield after sent

@@ -6,19 +6,21 @@ import 'package:speech_to_text/speech_to_text.dart';
 class SpeechToTextProvider extends ChangeNotifier {
   final SpeechToText _speechToText = SpeechToText();
   bool _isAvailable = false;
+  String _text = '';
+  String _status = 'Listening...';
 
-  Future<bool> isAvailabe({required ValueChanged<bool> onListening}) async {
+  String get text => _text;
+  String get status => _status;
+
+  Future<bool> isAvailabe() async {
     _isAvailable = await _speechToText.initialize(
       onStatus: (status) {
-        if (status == 'listening') {
-          onListening(true);
-        } else {
-          onListening(false);
-        }
         debugPrint('Status: $status');
       },
       onError: (error) {
         debugPrint('Error: $error');
+        _status = 'Stopped';
+        notifyListeners();
       },
       finalTimeout: const Duration(seconds: 5),
     );
@@ -36,16 +38,24 @@ class SpeechToTextProvider extends ChangeNotifier {
   void _onSpeechResult(SpeechRecognitionResult result) {
     if (result.finalResult) {
       debugPrint('Final Result: ${result.recognizedWords}');
+      _text = result.recognizedWords;
+      _status = 'Done';
     } else {
       debugPrint('Interim Result: ${result.recognizedWords}');
+      _text = result.recognizedWords;
     }
+    notifyListeners();
   }
 
   void stopListening() {
+    _status = 'Listening...';
+    _text = '';
     _speechToText.stop();
   }
 
   void cancelListening() {
+    _status = 'Listening...';
+    _text = '';
     _speechToText.cancel();
   }
 }

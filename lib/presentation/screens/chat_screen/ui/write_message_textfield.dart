@@ -43,19 +43,9 @@ class WriteMessageTextField extends ConsumerWidget {
           IconButton(
             onPressed: () {
               if (ref.read(messagesProvider).isVoiceChat) {
-                ref.read(speechToTextProvider).isAvailabe(
-                    onListening: (bool value) {
-                  if (value) {
-                    debugPrint('Listening...');
-                    showRecordingBottomSheet(context, ref);
-                  } else if (!value) {
-                    debugPrint('Not Listening...');
-                    Navigator.canPop(context)
-                        ? Navigator.of(context).pop()
-                        : null;
-                  }
-                }).then((available) {
+                ref.read(speechToTextProvider).isAvailabe().then((available) {
                   if (available) {
+                    showRecordingBottomSheet(context, ref);
                     ref.read(speechToTextProvider).startListening();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -89,17 +79,45 @@ class WriteMessageTextField extends ConsumerWidget {
       context: context,
       shape: const RoundedRectangleBorder(),
       isDismissible: false,
-      builder: (context) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      builder: (context) => Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          TextButton(
-              onPressed: () {
-                ref.read(speechToTextProvider).cancelListening();
-                Navigator.of(context).pop();
+          // Shows the text from speech
+          Container(
+            padding: const EdgeInsets.all(8.0),
+            child: Consumer(
+              builder: (context, ref, child) {
+                final text = ref.watch(speechToTextProvider).text;
+                return Text(text);
               },
-              child: const Text('cancel')),
-          const Text('Listening...'),
-          TextButton(onPressed: () {}, child: const Text('send')),
+            ),
+          ),
+          // shows the option to cancel, send
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // cancel button
+              TextButton(
+                  onPressed: () {
+                    ref.read(speechToTextProvider).cancelListening();
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('cancel')),
+              // shows the status of speech
+              Consumer(builder: (context, ref, child) {
+                return Text(ref.watch(speechToTextProvider).status);
+              }),
+              // send button
+              TextButton(
+                  onPressed: () {
+                    ref.read(speechToTextProvider).stopListening();
+                    final text = ref.watch(speechToTextProvider).text;
+                    ref.read(messagesProvider).addMessage(text);
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('send')),
+            ],
+          ),
         ],
       ),
     );
