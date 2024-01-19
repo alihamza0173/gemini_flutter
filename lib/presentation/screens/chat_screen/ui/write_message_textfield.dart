@@ -43,16 +43,26 @@ class WriteMessageTextField extends ConsumerWidget {
           IconButton(
             onPressed: () {
               if (ref.read(messagesProvider).isVoiceChat) {
-                ref.read(speechToTextProvider).startListening(context,
+                ref.read(speechToTextProvider).isAvailabe(
                     onListening: (bool value) {
                   if (value) {
                     debugPrint('Listening...');
                     showRecordingBottomSheet(context, ref);
-                  } else {
+                  } else if (!value) {
                     debugPrint('Not Listening...');
                     Navigator.canPop(context)
                         ? Navigator.of(context).pop()
                         : null;
+                  }
+                }).then((available) {
+                  if (available) {
+                    ref.read(speechToTextProvider).startListening();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Speech recognition unavailable'),
+                      ),
+                    );
                   }
                 });
               } else {

@@ -38,7 +38,12 @@ class ChatBubble extends StatelessWidget {
                   fontSize: 16.0,
                 ),
               ),
-              if (!isSentByUser) const Icon(Icons.volume_up, size: 18)
+              if (!isSentByUser)
+                const Icon(
+                  Icons.volume_up,
+                  size: 18,
+                  color: Colors.white,
+                )
             ],
           ),
         ),

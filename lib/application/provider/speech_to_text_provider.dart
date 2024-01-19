@@ -5,24 +5,32 @@ import 'package:speech_to_text/speech_to_text.dart';
 
 class SpeechToTextProvider extends ChangeNotifier {
   final SpeechToText _speechToText = SpeechToText();
-  void startListening(BuildContext context,
-      {required ValueChanged<bool> onListening}) async {
-    if (await _speechToText.initialize(
-      onStatus: (status) => onListening(_speechToText.isListening),
-    )) {
-      _speechToText.listen(
-        onResult: _onSpeechResult,
-        listenFor: const Duration(seconds: 30),
-        pauseFor: const Duration(seconds: 5),
-      );
-    } else {
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Speech recognition unavailable'),
-        ),
-      );
-    }
+  bool _isAvailable = false;
+
+  Future<bool> isAvailabe({required ValueChanged<bool> onListening}) async {
+    _isAvailable = await _speechToText.initialize(
+      onStatus: (status) {
+        if (status == 'listening') {
+          onListening(true);
+        } else {
+          onListening(false);
+        }
+        debugPrint('Status: $status');
+      },
+      onError: (error) {
+        debugPrint('Error: $error');
+      },
+      finalTimeout: const Duration(seconds: 5),
+    );
+    return _isAvailable;
+  }
+
+  void startListening() {
+    _speechToText.listen(
+      onResult: _onSpeechResult,
+      listenFor: const Duration(seconds: 30),
+      pauseFor: const Duration(seconds: 5),
+    );
   }
 
   void _onSpeechResult(SpeechRecognitionResult result) {
