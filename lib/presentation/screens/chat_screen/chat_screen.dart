@@ -18,6 +18,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     // from message provider it add listner to controller so that
     //can switch from voice to text and vice verse
     ref.read(messagesProvider).initController();
+    ref.read(messagesProvider).getBardResponse();
     super.initState();
   }
 

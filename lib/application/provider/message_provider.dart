@@ -1,9 +1,16 @@
 import 'package:elders_ai_app/application/common/chat_data.dart';
+import 'package:elders_ai_app/core/enums/chat_role.dart';
 import 'package:elders_ai_app/core/models/chat.dart';
+import 'package:elders_ai_app/core/repositry/bard_chat_repositry.dart';
+import 'package:elders_ai_app/core/services/bard_chat_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MessageProvider extends ChangeNotifier {
+  final BardChatRepositry _bardChatRepositry;
+
+  MessageProvider(this._bardChatRepositry);
+
   final List<Message> _messages = testChatMessages;
   bool _isVoiceChat = true;
   // Controller for Chat Screen
@@ -19,8 +26,7 @@ class MessageProvider extends ChangeNotifier {
   // when user press on send message
   void addMessage([String? message]) {
     _messages.add(Message(
-      sender: 'User',
-      receiver: 'Elders AI',
+      role: ChatRole.user,
       message: _isVoiceChat ? message ?? ' ' : _textEditingController.text,
     ));
     notifyListeners();
@@ -32,6 +38,11 @@ class MessageProvider extends ChangeNotifier {
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );
+  }
+
+  // Get Response from API
+  Future<void> getBardResponse() async {
+    _bardChatRepositry.getBardResponse([{}]);
   }
 
   // Add Listners to so that we can switch to voice chat or text
@@ -59,4 +70,5 @@ class MessageProvider extends ChangeNotifier {
   }
 }
 
-final messagesProvider = ChangeNotifierProvider((ref) => MessageProvider());
+final messagesProvider =
+    ChangeNotifierProvider((ref) => MessageProvider(BardChatService()));

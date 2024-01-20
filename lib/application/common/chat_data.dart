@@ -1,39 +1,33 @@
+import 'package:elders_ai_app/core/enums/chat_role.dart';
 import 'package:elders_ai_app/core/models/chat.dart';
 
 List<Message> testChatMessages = [
   Message(
-    sender: 'Elders AI',
-    receiver: 'User',
+    role: ChatRole.model,
     message: 'Hello, how can I help you?',
   ),
   Message(
-    sender: 'User',
-    receiver: 'Elders AI',
+    role: ChatRole.user,
     message: 'I need help with my phone',
   ),
   Message(
-    sender: 'Elders AI',
-    receiver: 'User',
+    role: ChatRole.model,
     message: 'What is the problem?',
   ),
   Message(
-    sender: 'User',
-    receiver: 'Elders AI',
+    role: ChatRole.user,
     message: 'I cannot make a call',
   ),
   Message(
-    sender: 'Elders AI',
-    receiver: 'User',
+    role: ChatRole.model,
     message: 'Please restart your phone',
   ),
   Message(
-    sender: 'User',
-    receiver: 'Elders AI',
+    role: ChatRole.user,
     message: 'Thank you',
   ),
   Message(
-    sender: 'Elders AI',
-    receiver: 'User',
+    role: ChatRole.model,
     message: 'You are welcome',
   ),
 ];

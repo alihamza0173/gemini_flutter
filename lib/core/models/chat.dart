@@ -1,11 +1,11 @@
+import 'package:elders_ai_app/core/enums/chat_role.dart';
+
 class Message {
-  final String sender;
-  final String receiver;
+  final ChatRole role;
   final String message;
 
   Message({
-    required this.sender,
-    required this.receiver,
+    required this.role,
     required this.message,
   });
 }
