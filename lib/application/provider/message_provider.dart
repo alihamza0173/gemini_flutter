@@ -21,7 +21,7 @@ class MessageProvider extends ChangeNotifier {
     _messages.add(Message(
       sender: 'User',
       receiver: 'Elders AI',
-      message: message ?? _textEditingController.text,
+      message: _isVoiceChat ? message ?? ' ' : _textEditingController.text,
     ));
     notifyListeners();
     // to clear the text from textfield after sent

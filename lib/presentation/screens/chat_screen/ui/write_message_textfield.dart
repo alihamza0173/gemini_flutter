@@ -110,9 +110,9 @@ class WriteMessageTextField extends ConsumerWidget {
               // send button
               TextButton(
                   onPressed: () {
-                    ref.read(speechToTextProvider).stopListening();
-                    final text = ref.watch(speechToTextProvider).text;
+                    final text = ref.read(speechToTextProvider).text;
                     ref.read(messagesProvider).addMessage(text);
+                    ref.read(speechToTextProvider).stopListening();
                     Navigator.of(context).pop();
                   },
                   child: const Text('send')),
