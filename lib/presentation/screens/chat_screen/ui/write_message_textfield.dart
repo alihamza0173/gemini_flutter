@@ -56,7 +56,7 @@ class WriteMessageTextField extends ConsumerWidget {
                   }
                 });
               } else {
-                ref.read(messagesProvider).addMessage();
+                ref.read(messagesProvider).sendPrompt();
               }
             },
             icon: Icon(ref.watch(messagesProvider).isVoiceChat
@@ -111,7 +111,7 @@ class WriteMessageTextField extends ConsumerWidget {
               TextButton(
                   onPressed: () {
                     final text = ref.read(speechToTextProvider).text;
-                    ref.read(messagesProvider).addMessage(text);
+                    ref.read(messagesProvider).sendPrompt(text);
                     ref.read(speechToTextProvider).stopListening();
                     Navigator.of(context).pop();
                   },
