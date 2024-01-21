@@ -41,7 +41,7 @@ class WriteMessageTextField extends ConsumerWidget {
             ),
           ),
           IconButton(
-            onPressed: () {
+            onPressed: () async {
               if (ref.read(messagesProvider).isVoiceChat) {
                 ref.read(speechToTextProvider).isAvailabe().then((available) {
                   if (available) {
@@ -56,7 +56,16 @@ class WriteMessageTextField extends ConsumerWidget {
                   }
                 });
               } else {
-                ref.read(messagesProvider).sendPrompt();
+                try {
+                  await ref.read(messagesProvider).sendPrompt();
+                } catch (e) {
+                  // ignore: use_build_context_synchronously
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Something Went Wrong!'),
+                    ),
+                  );
+                }
               }
             },
             icon: Icon(ref.watch(messagesProvider).isVoiceChat

@@ -2,6 +2,8 @@ import 'package:elders_ai_app/application/provider/tts_provider.dart';
 import 'package:elders_ai_app/core/enums/chat_role.dart';
 import 'package:elders_ai_app/core/models/chat.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ChatBubble extends StatelessWidget {
   const ChatBubble({
@@ -32,13 +34,22 @@ class ChatBubble extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                message.message,
-                style: TextStyle(
-                  color: user ? Colors.black : Colors.white,
-                  fontSize: 16.0,
-                ),
-              ),
+              user
+                  ? Text(
+                      message.message,
+                      style: TextStyle(
+                        color: user ? Colors.black : Colors.white,
+                        fontSize: 16.0,
+                      ),
+                    )
+                  : MarkdownBody(
+                      data: message.message,
+                      selectable: true,
+                      onTapLink: (text, href, title) {
+                        print('$text, $href, $title');
+                        launchUrl(Uri.parse(href!));
+                      },
+                    ),
               if (!user)
                 InkWell(
                   onTap: () => TTSProvider().speak(message.message),

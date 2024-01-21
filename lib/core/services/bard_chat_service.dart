@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:elders_ai_app/core/repositry/bard_chat_repositry.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -40,13 +42,17 @@ class BardChatService extends BardChatRepositry {
       ]
     };
     try {
-      final response = await _dio.post(url,
-          options: Options(headers: {
-            'Content-Type': 'application/json',
-          }),
-          data: data);
+      final response = await _dio.post(
+        url,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+        }),
+        data: data,
+      );
+      log(response.data.runtimeType.toString());
       return response.data['candidates'][0]['content'];
     } catch (e) {
+      log(e.toString());
       throw Exception(e);
     }
   }
