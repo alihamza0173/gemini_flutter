@@ -45,18 +45,34 @@ class ChatBubble extends StatelessWidget {
                   : MarkdownBody(
                       data: message.message,
                       selectable: true,
+                      styleSheet:
+                          MarkdownStyleSheet.fromTheme(Theme.of(context))
+                              .copyWith(
+                        p: const TextStyle(
+                          color: Colors.white,
+                        ),
+                        a: const TextStyle(
+                          color: Colors.white,
+                          decoration: TextDecoration.underline,
+                        ),
+                        listBullet: const TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                       onTapLink: (text, href, title) {
-                        print('$text, $href, $title');
                         launchUrl(Uri.parse(href!));
                       },
                     ),
               if (!user)
                 InkWell(
                   onTap: () => TTSProvider().speak(message.message),
-                  child: const Icon(
-                    Icons.volume_up,
-                    size: 18,
-                    color: Colors.white,
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6.0),
+                    child: Icon(
+                      Icons.volume_up,
+                      size: 18,
+                      color: Colors.white,
+                    ),
                   ),
                 )
             ],
