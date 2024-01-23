@@ -78,9 +78,12 @@ class WriteMessageTextField extends ConsumerWidget {
                         }
                       }
                     },
-                    icon: Icon(ref.watch(messagesProvider).isVoiceChat
-                        ? Icons.mic
-                        : Icons.send),
+                    icon: Icon(
+                      ref.watch(messagesProvider).isVoiceChat
+                          ? Icons.mic
+                          : Icons.send,
+                      color: Colors.white,
+                    ),
                     iconSize: 22.0,
                   ),
           ),

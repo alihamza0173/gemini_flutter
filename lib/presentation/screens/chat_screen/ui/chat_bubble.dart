@@ -51,6 +51,7 @@ class ChatBubble extends StatelessWidget {
                         a: const TextStyle(
                           color: Colors.deepPurple,
                           decoration: TextDecoration.underline,
+                          decorationColor: Colors.deepPurple,
                         ),
                         listBullet: const TextStyle(
                           color: Colors.white,

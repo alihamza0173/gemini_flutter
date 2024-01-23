@@ -62,14 +62,16 @@ class MessageProvider extends ChangeNotifier {
       _contents.add(response);
       _messages.add(
           Message(role: ChatRole.model, message: response['parts'][0]['text']));
+      _isLoadingResponse = false;
+      notifyListeners();
       _goToRecentMessage();
     } catch (e) {
       // if there is any error remove the last message sent to the bard as it is not sent
       _contents.removeLast();
+      _isLoadingResponse = false;
+      notifyListeners();
       throw Exception(e);
     }
-    _isLoadingResponse = false;
-    notifyListeners();
   }
 
   // to scroll the list of messages so that recent message is always on bottom
