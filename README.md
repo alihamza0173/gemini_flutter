@@ -12,9 +12,11 @@ Flutter project that leverages the Gemini AI API to create a conversational expe
 
 
 ## Demo
-<div style="text-align: center;">
-  <img src="assets/demo.gif" alt="Gemini AI Chat App Demo" style="max-width: 300px; max-height: 200px; width: auto; height: auto; display: inline-block;">
-</div>
+<table>
+  <tr>
+      <img src="assets/demo.gif" width="200" />
+  </tr>
+</table>
 
 
 ## Installation
