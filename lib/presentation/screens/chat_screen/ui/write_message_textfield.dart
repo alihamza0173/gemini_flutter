@@ -18,16 +18,10 @@ class WriteMessageTextField extends ConsumerWidget {
               textCapitalization: TextCapitalization.sentences,
               minLines: 1,
               maxLines: 5,
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 16.0,
-              ),
+              style: const TextStyle(color: Colors.black, fontSize: 16.0),
               decoration: InputDecoration(
                 hintText: 'Type your message here...',
-                hintStyle: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 16.0,
-                ),
+                hintStyle: const TextStyle(color: Colors.black),
                 filled: true,
                 fillColor: const Color.fromARGB(255, 218, 238, 255),
                 border: OutlineInputBorder(
@@ -40,42 +34,55 @@ class WriteMessageTextField extends ConsumerWidget {
               ),
             ),
           ),
-          IconButton(
-            onPressed: () async {
-              if (ref.read(messagesProvider).isVoiceChat) {
-                ref.read(speechToTextProvider).isAvailabe().then((available) {
-                  if (available) {
-                    showRecordingBottomSheet(context, ref);
-                    ref.read(speechToTextProvider).startListening();
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Speech recognition unavailable'),
-                      ),
-                    );
-                  }
-                });
-              } else {
-                try {
-                  await ref.read(messagesProvider).sendPrompt();
-                } catch (e) {
-                  // ignore: use_build_context_synchronously
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Something Went Wrong!'),
-                    ),
-                  );
-                }
-              }
-            },
-            icon: Icon(ref.watch(messagesProvider).isVoiceChat
-                ? Icons.mic
-                : Icons.send),
-            iconSize: 22.0,
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.blue),
-              iconColor: MaterialStateProperty.all(Colors.white),
+          Container(
+            margin: const EdgeInsets.only(left: 8.0),
+            constraints: const BoxConstraints(maxHeight: 42.0, maxWidth: 42.0),
+            decoration: const BoxDecoration(
+              color: Colors.blue,
+              shape: BoxShape.circle,
             ),
+            child: ref.watch(messagesProvider).isLoadingResponse
+                ? const Padding(
+                    padding: EdgeInsets.all(12.0),
+                    child: CircularProgressIndicator(
+                        color: Colors.white, strokeWidth: 2.0),
+                  )
+                : IconButton(
+                    onPressed: () async {
+                      if (ref.read(messagesProvider).isVoiceChat) {
+                        ref
+                            .read(speechToTextProvider)
+                            .isAvailabe()
+                            .then((available) {
+                          if (available) {
+                            showRecordingBottomSheet(context, ref);
+                            ref.read(speechToTextProvider).startListening();
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Speech recognition unavailable'),
+                              ),
+                            );
+                          }
+                        });
+                      } else {
+                        try {
+                          await ref.read(messagesProvider).sendPrompt();
+                        } catch (e) {
+                          // ignore: use_build_context_synchronously
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Something Went Wrong!'),
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    icon: Icon(ref.watch(messagesProvider).isVoiceChat
+                        ? Icons.mic
+                        : Icons.send),
+                    iconSize: 22.0,
+                  ),
           ),
         ],
       ),
@@ -118,11 +125,20 @@ class WriteMessageTextField extends ConsumerWidget {
               }),
               // send button
               TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     final text = ref.read(speechToTextProvider).text;
-                    ref.read(messagesProvider).sendPrompt(text);
                     ref.read(speechToTextProvider).stopListening();
                     Navigator.of(context).pop();
+                    try {
+                      await ref.read(messagesProvider).sendPrompt(text);
+                    } catch (e) {
+                      // ignore: use_build_context_synchronously
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Something Went Wrong!'),
+                        ),
+                      );
+                    }
                   },
                   child: const Text('send')),
             ],

@@ -6,10 +6,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ChatBubble extends StatelessWidget {
-  const ChatBubble({
-    super.key,
-    required this.message,
-  });
+  const ChatBubble({super.key, required this.message});
 
   final Message message;
 
@@ -52,7 +49,7 @@ class ChatBubble extends StatelessWidget {
                           color: Colors.white,
                         ),
                         a: const TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
                           decoration: TextDecoration.underline,
                         ),
                         listBullet: const TextStyle(

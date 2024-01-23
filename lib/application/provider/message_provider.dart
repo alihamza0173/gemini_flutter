@@ -18,6 +18,7 @@ class MessageProvider extends ChangeNotifier {
       message: 'Howdy! How can I assist you today? 🤝 ',
     ),
   ];
+  bool _isLoadingResponse = false;
   bool _isVoiceChat = true;
   // Controller for Chat Screen
   final TextEditingController _textEditingController = TextEditingController();
@@ -25,6 +26,7 @@ class MessageProvider extends ChangeNotifier {
 
   //getters
   List<Message> get messages => _messages;
+  bool get isLoadingResponse => _isLoadingResponse;
   bool get isVoiceChat => _isVoiceChat;
   TextEditingController get textEditingController => _textEditingController;
   ScrollController get scrollController => _scrollController;
@@ -37,6 +39,7 @@ class MessageProvider extends ChangeNotifier {
       role: ChatRole.user,
       message: text,
     ));
+    _isLoadingResponse = true;
     notifyListeners();
     // Add message to the content that is sent to the bard
     _contents.add({
@@ -59,13 +62,14 @@ class MessageProvider extends ChangeNotifier {
       _contents.add(response);
       _messages.add(
           Message(role: ChatRole.model, message: response['parts'][0]['text']));
-      notifyListeners();
       _goToRecentMessage();
     } catch (e) {
       // if there is any error remove the last message sent to the bard as it is not sent
       _contents.removeLast();
       throw Exception(e);
     }
+    _isLoadingResponse = false;
+    notifyListeners();
   }
 
   // to scroll the list of messages so that recent message is always on bottom
