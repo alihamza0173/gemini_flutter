@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:elders_ai_app/core/repositry/bard_chat_repositry.dart';
+import 'package:elders_ai_app/repositry/repositry/bard_chat_repositry.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class BardChatService extends BardChatRepositry {

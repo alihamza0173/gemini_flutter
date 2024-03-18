@@ -1,6 +1,6 @@
-import 'package:elders_ai_app/application/provider/theme_provider.dart';
-import 'package:elders_ai_app/application/theme/app_theme.dart';
-import 'package:elders_ai_app/presentation/screens/chat_screen/chat_screen.dart';
+import 'package:elders_ai_app/configs/provider/theme_provider.dart';
+import 'package:elders_ai_app/configs/theme/app_theme.dart';
+import 'package:elders_ai_app/view/screens/chat_screen/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

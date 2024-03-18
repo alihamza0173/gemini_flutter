@@ -1,6 +1,6 @@
-import 'package:elders_ai_app/presentation/common/snack_bar.dart';
-import 'package:elders_ai_app/application/provider/message_provider.dart';
-import 'package:elders_ai_app/application/provider/speech_to_text_provider.dart';
+import 'package:elders_ai_app/view/common/snack_bar.dart';
+import 'package:elders_ai_app/configs/provider/message_provider.dart';
+import 'package:elders_ai_app/configs/provider/speech_to_text_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

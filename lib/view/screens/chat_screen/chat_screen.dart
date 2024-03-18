@@ -1,7 +1,7 @@
-import 'package:elders_ai_app/application/provider/message_provider.dart';
-import 'package:elders_ai_app/application/provider/theme_provider.dart';
-import 'package:elders_ai_app/presentation/screens/chat_screen/ui/chat_bubble.dart';
-import 'package:elders_ai_app/presentation/screens/chat_screen/ui/write_message_textfield.dart';
+import 'package:elders_ai_app/configs/provider/message_provider.dart';
+import 'package:elders_ai_app/configs/provider/theme_provider.dart';
+import 'package:elders_ai_app/view/screens/chat_screen/ui/chat_bubble.dart';
+import 'package:elders_ai_app/view/screens/chat_screen/ui/write_message_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

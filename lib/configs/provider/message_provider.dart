@@ -1,8 +1,8 @@
-import 'package:elders_ai_app/application/common/trained_data.dart';
-import 'package:elders_ai_app/core/enums/chat_role.dart';
-import 'package:elders_ai_app/core/models/chat.dart';
-import 'package:elders_ai_app/core/repositry/bard_chat_repositry.dart';
-import 'package:elders_ai_app/core/services/bard_chat_service.dart';
+import 'package:elders_ai_app/configs/common/trained_data.dart';
+import 'package:elders_ai_app/configs/enums/chat_role.dart';
+import 'package:elders_ai_app/model/chat.dart';
+import 'package:elders_ai_app/repositry/repositry/bard_chat_repositry.dart';
+import 'package:elders_ai_app/repositry/services/bard_chat_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

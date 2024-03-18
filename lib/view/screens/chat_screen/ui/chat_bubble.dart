@@ -1,6 +1,6 @@
-import 'package:elders_ai_app/application/provider/tts_provider.dart';
-import 'package:elders_ai_app/core/enums/chat_role.dart';
-import 'package:elders_ai_app/core/models/chat.dart';
+import 'package:elders_ai_app/configs/provider/tts_provider.dart';
+import 'package:elders_ai_app/configs/enums/chat_role.dart';
+import 'package:elders_ai_app/model/chat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';

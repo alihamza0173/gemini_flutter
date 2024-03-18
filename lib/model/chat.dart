@@ -1,4 +1,4 @@
-import 'package:elders_ai_app/core/enums/chat_role.dart';
+import 'package:elders_ai_app/configs/enums/chat_role.dart';
 
 class Message {
   final ChatRole role;
